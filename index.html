@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DSGNR³ / 디자이너 3대 측정</title>
+  <meta name="description" content="타자, 클릭, 트레이스. 디자인 퍼포먼스를 무게로 환산하는 풍자 벤치마크." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ─────────────────────────  HERO  ───────────────────────── -->
+  <section class="hero" id="hero">
+    <header class="topbar">
+      <span class="mark">DSGNR<sup>3</sup></span>
+      <span class="topbar-meta">DESIGN&nbsp;PERFORMANCE&nbsp;BENCHMARK&nbsp;·&nbsp;v1.0</span>
+      <span class="topbar-time" id="now">—</span>
+    </header>
+
+    <div class="hero-grid">
+      <h1 class="display" aria-label="JUST DO THE WORK">
+        <span class="d-just">JUST</span>
+        <span class="d-do">DO</span>
+        <span class="d-the">THE</span>
+        <span class="d-work">WORK</span>
+        <span class="d-vert">DSGNR — 3LIFTS</span>
+      </h1>
+      <aside class="hero-side">
+        <p class="kicker">3-LIFT TOTAL</p>
+        <p class="lede">
+          파워리프팅의 3대 운동을 디자이너의 일상 업무로 옮겨 측정합니다.
+          벤치는 <b>타자</b>, 스쿼트는 <b>클릭</b>, 데드리프트는 <b>트레이스</b>.
+          그리고 마지막으로 당신의 <b>원판</b>을 직접 장전하세요.
+        </p>
+        <a href="#lift-01" class="cta">START SESSION →</a>
+      </aside>
+    </div>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>TYPE · CLICK · TRACE · LOAD · TYPE · CLICK · TRACE · LOAD ·</span>
+        <span>TYPE · CLICK · TRACE · LOAD · TYPE · CLICK · TRACE · LOAD ·</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────  LIFT 01 / TYPING / BENCH  ───────────────────────── -->
+  <section class="lift" id="lift-01">
+    <header class="lift-head">
+      <span class="lift-no">LIFT&nbsp;01</span>
+      <h2 class="lift-title">BENCH<br />PRESS</h2>
+      <p class="lift-sub">타자 속도 / 30초간 정확하게 따라 칠 것</p>
+      <p class="lift-rule">RULE&nbsp;·&nbsp;정타 1자 = 1kg · 오타 1자 = -2kg</p>
+    </header>
+
+    <div class="lift-stage">
+      <div class="prompt-box">
+        <p class="prompt-meta"><span>SCRIPT</span><span id="typing-script-name">SCRIPT&nbsp;A</span></p>
+        <p class="prompt-text" id="typing-prompt"></p>
+      </div>
+      <textarea id="typing-input" rows="4" spellcheck="false" autocomplete="off" autocorrect="off" placeholder="START 버튼을 누르면 입력이 활성화됩니다."></textarea>
+
+      <div class="stat-row">
+        <button class="btn primary" id="typing-start">START</button>
+        <div class="stat"><span>TIME</span><b id="typing-time">30</b><i>s</i></div>
+        <div class="stat"><span>WPM</span><b id="typing-wpm">0</b><i>w/m</i></div>
+        <div class="stat"><span>ACC</span><b id="typing-acc">100</b><i>%</i></div>
+        <div class="stat highlight"><span>BENCH</span><b id="typing-kg">0</b><i>kg</i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────  LIFT 02 / CLICK / SQUAT  ───────────────────────── -->
+  <section class="lift dark" id="lift-02">
+    <header class="lift-head">
+      <span class="lift-no">LIFT&nbsp;02</span>
+      <h2 class="lift-title">SQUAT</h2>
+      <p class="lift-sub">클릭 속도 / 10초간 타겟을 최대한 많이 클릭할 것</p>
+      <p class="lift-rule">RULE&nbsp;·&nbsp;1 클릭 = 1.5kg</p>
+    </header>
+
+    <div class="lift-stage">
+      <div class="click-arena">
+        <button class="click-target" id="click-target">
+          <span class="click-target-inner" id="click-target-inner">CLICK</span>
+        </button>
+        <div class="click-progress"><span id="click-progress-bar"></span></div>
+      </div>
+
+      <div class="stat-row">
+        <button class="btn primary" id="click-start">START</button>
+        <div class="stat"><span>TIME</span><b id="click-time">10.0</b><i>s</i></div>
+        <div class="stat"><span>HITS</span><b id="click-hits">0</b><i>x</i></div>
+        <div class="stat"><span>CPS</span><b id="click-cps">0.0</b><i>/s</i></div>
+        <div class="stat highlight"><span>SQUAT</span><b id="click-kg">0</b><i>kg</i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────  LIFT 03 / TRACE / DEADLIFT  ───────────────────────── -->
+  <section class="lift" id="lift-03">
+    <header class="lift-head">
+      <span class="lift-no">LIFT&nbsp;03</span>
+      <h2 class="lift-title">DEAD<br />LIFT</h2>
+      <p class="lift-sub">트랙패드 트레이스 / 점선 위를 한 번에 따라 그릴 것</p>
+      <p class="lift-rule">RULE&nbsp;·&nbsp;정확도(%) × 2 = kg · 중간에 손을 떼면 무효</p>
+    </header>
+
+    <div class="lift-stage">
+      <div class="trace-arena">
+        <canvas id="trace-canvas" width="1000" height="320"></canvas>
+        <p class="trace-hint" id="trace-hint">START → 왼쪽 끝의 <span class="dot"></span> 부터 오른쪽 끝까지 한 번에</p>
+      </div>
+
+      <div class="stat-row">
+        <button class="btn primary" id="trace-start">START</button>
+        <button class="btn ghost" id="trace-reset">RESET</button>
+        <div class="stat"><span>COVERAGE</span><b id="trace-cov">0</b><i>%</i></div>
+        <div class="stat"><span>DEVIATION</span><b id="trace-dev">—</b><i>px</i></div>
+        <div class="stat highlight"><span>DEAD</span><b id="trace-kg">0</b><i>kg</i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────  BONUS / PLATES  ───────────────────────── -->
+  <section class="lift accent" id="bonus">
+    <header class="lift-head">
+      <span class="lift-no">BONUS</span>
+      <h2 class="lift-title">RACK<br />YOUR<br />WEIGHTS</h2>
+      <p class="lift-sub">사용하는 디자인 툴을 원판으로 장전하세요</p>
+      <p class="lift-rule">RULE&nbsp;·&nbsp;원판은 한 쌍(좌+우)으로 적재됩니다 · 무게 그대로 합산</p>
+    </header>
+
+    <div class="lift-stage">
+      <div class="rack" id="rack">
+        <div class="bar">
+          <div class="sleeve left" id="sleeve-left" data-side="left"></div>
+          <div class="bar-shaft"></div>
+          <div class="sleeve right" id="sleeve-right" data-side="right"></div>
+        </div>
+        <p class="rack-hint">↓ 아래 원판을 끌어다 봉의 양끝에 장전 ↓</p>
+      </div>
+
+      <div class="plate-tray" id="plate-tray">
+        <!-- plates injected by JS -->
+      </div>
+
+      <div class="stat-row">
+        <button class="btn ghost" id="rack-clear">CLEAR&nbsp;BAR</button>
+        <div class="stat"><span>LEFT</span><b id="rack-left">0</b><i>kg</i></div>
+        <div class="stat"><span>RIGHT</span><b id="rack-right">0</b><i>kg</i></div>
+        <div class="stat"><span>BAR</span><b>20</b><i>kg</i></div>
+        <div class="stat highlight"><span>RACK</span><b id="rack-total">20</b><i>kg</i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────  TOTAL  ───────────────────────── -->
+  <section class="total" id="total">
+    <p class="kicker">3-LIFT TOTAL + RACK</p>
+    <h2 class="big-num"><b id="grand-total">0</b><i>kg</i></h2>
+    <div class="total-breakdown">
+      <span>BENCH&nbsp;<b id="bd-bench">0</b></span>
+      <span>SQUAT&nbsp;<b id="bd-squat">0</b></span>
+      <span>DEAD&nbsp;<b id="bd-dead">0</b></span>
+      <span>RACK&nbsp;<b id="bd-rack">20</b></span>
+    </div>
+    <p class="total-tier" id="total-tier">UNRANKED</p>
+    <div class="total-actions">
+      <button class="btn primary" id="copy-result">COPY RESULT</button>
+      <a href="#hero" class="btn ghost">RESTART</a>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span>© DSGNR³ · A satirical benchmark for the desk-bound athlete.</span>
+    <span>JUST&nbsp;DO&nbsp;THE&nbsp;WORK.</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
