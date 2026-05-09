@@ -22,6 +22,29 @@ setInterval(tickClock, 1000); tickClock();
 /* ───────── shared state / total ───────── */
 const STATE = { bench: 0, squat: 0, dead: 0, rack: 20 };
 
+/* ───────── ctrl+s next-section nav ───────── */
+let nextSection = null;
+const hintEl = $('#next-hint');
+function showNext(targetId){
+  nextSection = targetId;
+  if (hintEl) hintEl.hidden = false;
+}
+function clearNext(){
+  nextSection = null;
+  if (hintEl) hintEl.hidden = true;
+}
+window.addEventListener('keydown', e => {
+  // Ctrl+S (win/linux) or Cmd+S (mac)
+  if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')){
+    e.preventDefault();
+    if (nextSection){
+      const el = document.querySelector(nextSection);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      clearNext();
+    }
+  }
+}, { capture: true });
+
 function tierFor(kg){
   if (kg < 100) return 'UNRANKED';
   if (kg < 200) return 'D · ROOKIE';
@@ -45,10 +68,9 @@ function updateTotal(){
    LIFT 01 / TYPING — bench press
    ============================================================ */
 const TYPING_SCRIPTS = [
-  '좋은 디자인은 이유 있는 결정의 합이다. 타이포그래피는 침묵의 언어이며, 여백은 가장 큰 디자인 요소다. 디테일에 신이 있다.',
-  '컨셉은 가설이고 디테일은 증명이다. 픽셀 단위의 망설임이 결국 브랜드의 인상을 만든다. 일관성은 규율이며 규율은 곧 미감이다.',
-  '디자이너의 손은 마우스보다 키보드에서 더 많은 결정을 내린다. 단축키는 근육이고 정렬은 자세다. 마감은 운동이고 출시는 시합이다.',
-  '폰트는 목소리, 그리드는 골격, 컬러는 체온이다. 좋은 인터페이스는 사용자가 자신이 똑똑하다고 느끼게 만들고 결코 자랑하지 않는다.'
+  '대표님이 방금 보시더니 전체 방향을 완전히 바꾸자고 하셔서요. 지금까지 작업해주신 건 너무 고생하셨는데, 처음 기획 단계 느낌으로 다시 새로 가볼 수 있을까요?',
+  '뭔가 부족한 느낌은 있는데 정확히 뭐가 문제인지는 저희도 잘 모르겠어요. 일단 디자이너님 감각으로 여러 방향 시도해서 수정본 몇 가지 더 보여주시면 그중에서 느낌 오는 걸로 골라볼게요.',
+  '수정은 진짜 간단한 부분이라 금방 끝날 것 같은데, 이런 정도는 추가 비용 없이 반영 가능한 거죠? 근데 수정사항은 제가 정리해서 다시 한번 더 보내드릴게요.'
 ];
 let typingState = null;
 
@@ -75,6 +97,7 @@ function renderPrompt(target, typed){
 }
 function startTyping(){
   if (typingState && typingState.running) return;
+  clearNext();
   const target = pickScript();
   const input  = $('#typing-input');
   input.value = '';
@@ -114,7 +137,7 @@ function endTyping(){
   const elapsedSec = (performance.now() - typingState.started) / 1000;
   const wpm = Math.round((correct / 5) / Math.max(elapsedSec, 1) * 60);
   const acc = typed.length ? Math.round(correct / typed.length * 100) : 100;
-  const kg  = Math.max(0, correct - 2 * wrong);
+  const kg  = Math.max(0, correct - 2 * wrong) * 3;
 
   $('#typing-wpm').textContent = wpm;
   $('#typing-acc').textContent = acc;
@@ -125,6 +148,7 @@ function endTyping(){
 
   STATE.bench = kg;
   updateTotal();
+  showNext('#lift-02');
 }
 $('#typing-input').addEventListener('input', () => {
   if (!typingState || !typingState.running) return;
@@ -158,6 +182,7 @@ function placeClickTarget(initial = false){
 }
 function startClick(){
   if (clickState && clickState.running) return;
+  clearNext();
   clickState = { running: true, hits: 0, started: performance.now(), duration: 10000 };
   $('#click-target').disabled = false;
   $('#click-start').disabled = true;
@@ -186,7 +211,7 @@ function endClick(){
   $('#click-time').textContent = '0.0';
   $('#click-progress-bar').style.width = '100%';
   const cps = clickState.hits / 10;
-  const kg  = Math.round(clickState.hits * 1.5);
+  const kg  = Math.round(clickState.hits * 1.5) * 3;
   $('#click-cps').textContent  = cps.toFixed(1);
   $('#click-kg').textContent   = kg;
   $('#click-start').disabled = false;
@@ -196,6 +221,7 @@ function endClick(){
   setTimeout(() => $('#click-progress-bar').style.width = '0%', 600);
   STATE.squat = kg;
   updateTotal();
+  showNext('#lift-03');
 }
 $('#click-target').addEventListener('click', () => {
   if (!clickState || !clickState.running) return;
@@ -327,7 +353,7 @@ function finishTrace(){
   const avgDev = totalDev / traceState.target.length;
   const cov    = covered / traceState.target.length * 100;
   const accuracy = Math.max(0, 100 - avgDev * 1.5) * (cov / 100);
-  const kg = Math.round(accuracy * 2);
+  const kg = Math.round(accuracy * 2) * 3;
 
   $('#trace-cov').textContent = Math.round(cov);
   $('#trace-dev').textContent = avgDev.toFixed(1);
@@ -338,8 +364,10 @@ function finishTrace(){
 
   STATE.dead = kg;
   updateTotal();
+  showNext('#bonus');
 }
 function startTrace(){
+  clearNext();
   generateTraceTarget();
   traceState.points = [];
   traceState.running = true;
@@ -448,6 +476,14 @@ function updateRack(){
   $('#rack-total').textContent = total;
   STATE.rack = total;
   updateTotal();
+  // tilt: heavier side drops (right heavier → +deg → right end down)
+  const tilt = clamp((right - left) * 0.3, -12, 12);
+  const barEl = document.querySelector('.bar');
+  if (barEl) barEl.style.setProperty('--tilt', tilt.toFixed(2) + 'deg');
+  // any plate loaded → enable Ctrl+S to total
+  const anyPlate = sleeves[0].plates.length + sleeves[1].plates.length > 0;
+  if (anyPlate) showNext('#total');
+  else if (nextSection === '#total') clearNext();
 }
 $('#rack-clear').addEventListener('click', () => {
   sleeves.forEach(s => { s.collar.innerHTML = ''; s.plates = []; });
